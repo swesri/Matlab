@@ -1,0 +1,97 @@
+clc;
+a=input('sequence:');
+m=length(a);
+l=2^m-1;
+for i=1:l
+    b1(i)=a(m);
+    b(i)=xor(a(m),a(m-1));
+    for j=2:m
+        a1(j)=a(j-1);
+    end
+    a1(1)=b(i);
+    a=a1;
+    %disp(a1);
+end
+%display(a);
+%display(b1);
+zer=0;
+one=0;
+prop=0;
+for i=1:length(b1)
+    if b1(i)==0
+        zer=zer+1;
+    else
+        one=one+1;
+    end
+end
+if abs(zer-one)<=1
+    disp('balance property satisfied');
+    prop=prop+1;
+else
+    disp('balance property not satisfied');
+end
+for i=2:length(b1)
+    b2(i)=b(i-1);
+end
+b2(1)=b(length(b1));
+equ=0;
+notequ=0;
+for i=1:l
+    if b1(i)==b2(i)
+        equ=equ+1;
+    else
+        notequ=notequ+1;
+    end
+end
+if abs(equ-notequ)<=1
+    disp('correlation property satisfied');
+    prop=prop+1;
+else
+    disp('correlation property not satisfied');
+end
+
+if prop==2
+    disp('given sequence is a pn sequence');
+else
+    disp('given sequence is not a pn sequence');
+end
+
+run=1;
+runlen=m-1;
+len=1;
+p=1;
+for i=2:l
+    if b1(i)~=b1(i-1)
+        run=run+1;
+        le(p)=len;
+        len=1;
+        p=p+1;
+    else
+        len=len+1;
+    end
+end
+runl=0;
+for j=1:runlen
+    u=0;
+    for i=1:run
+        if le(i)==j
+            runl(j)=u+1;
+            u=runl(j);
+        end
+    end
+end
+y=0;
+for i=1:runlen
+    if (runl(i)/run)==(1/(2^i))
+        y=y+1;
+    end
+end
+if y==runlen
+    prop=prop+1;
+    disp('run property satisfied');
+else
+    disp('run property not satisfied');
+end
+        
+
+    
